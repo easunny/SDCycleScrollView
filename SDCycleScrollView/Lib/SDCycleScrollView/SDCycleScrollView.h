@@ -106,7 +106,8 @@ typedef enum {
 @property (nonatomic, strong) NSArray *localizationImageNamesGroup;
 
 
-
+/// 是否是RTL
+@property (nonatomic, assign) BOOL isRtl;
 
 
 //////////////////////  滚动控制API //////////////////////

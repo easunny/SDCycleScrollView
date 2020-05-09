@@ -296,11 +296,24 @@ NSString * const ID = @"SDCycleScrollViewCell";
 
 - (void)setImagePathsGroup:(NSArray *)imagePathsGroup
 {
+    if ([imagePathsGroup isEqualToArray:_imagePathsGroup]) {
+        return ;
+    }
+    
     [self invalidateTimer];
     
     _imagePathsGroup = imagePathsGroup;
     
     _totalItemsCount = self.infiniteLoop ? self.imagePathsGroup.count * 100 : self.imagePathsGroup.count;
+    if (_totalItemsCount > 0) {
+        int targetIndex = 0;
+        if (self.infiniteLoop) {
+            targetIndex = _totalItemsCount * 0.5;
+        }else{
+            targetIndex = 0;
+        }
+        [_mainView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:targetIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    }
     
     if (imagePathsGroup.count > 1) { // 由于 !=1 包含count == 0等情况
         self.mainView.scrollEnabled = YES;
@@ -458,6 +471,9 @@ NSString * const ID = @"SDCycleScrollViewCell";
     int index = 0;
     if (_flowLayout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
         index = (_mainView.contentOffset.x + _flowLayout.itemSize.width * 0.5) / _flowLayout.itemSize.width;
+        if (self.isRtl) {
+            index = _totalItemsCount - index - 1;
+        }
     } else {
         index = (_mainView.contentOffset.y + _flowLayout.itemSize.height * 0.5) / _flowLayout.itemSize.height;
     }
@@ -491,15 +507,6 @@ NSString * const ID = @"SDCycleScrollViewCell";
     _flowLayout.itemSize = self.frame.size;
     
     _mainView.frame = self.bounds;
-    if (_mainView.contentOffset.x == 0 &&  _totalItemsCount) {
-        int targetIndex = 0;
-        if (self.infiniteLoop) {
-            targetIndex = _totalItemsCount * 0.5;
-        }else{
-            targetIndex = 0;
-        }
-        [_mainView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:targetIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-    }
     
     CGSize size = CGSizeZero;
     if ([self.pageControl isKindOfClass:[TAPageControl class]]) {
