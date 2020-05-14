@@ -304,7 +304,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
     
     _imagePathsGroup = imagePathsGroup;
     
-    _totalItemsCount = self.infiniteLoop ? self.imagePathsGroup.count * 100 : self.imagePathsGroup.count;
+    _totalItemsCount = self.infiniteLoop ? self.imagePathsGroup.count * 200 : self.imagePathsGroup.count;
     if (_totalItemsCount > 0) {
         int targetIndex = 0;
         if (self.infiniteLoop) {
@@ -479,6 +479,11 @@ NSString * const ID = @"SDCycleScrollViewCell";
     }
     
     return MAX(0, index);
+}
+
+- (NSInteger)currentPage
+{
+    return [self pageControlIndexWithCurrentCellIndex:[self currentIndex]];
 }
 
 - (int)pageControlIndexWithCurrentCellIndex:(NSInteger)index
