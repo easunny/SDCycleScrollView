@@ -106,7 +106,8 @@ typedef enum {
 @property (nonatomic, strong) NSArray *localizationImageNamesGroup;
 
 
-
+/// 是否是RTL
+@property (nonatomic, assign) BOOL isRtl;
 
 
 //////////////////////  滚动控制API //////////////////////
@@ -195,6 +196,9 @@ typedef enum {
 
 /** 轮播文字label对齐方式 */
 @property (nonatomic, assign) NSTextAlignment titleLabelTextAlignment;
+
+/** 当前页*/
+- (NSInteger)currentPage;
 
 /** 滚动手势禁用（文字轮播较实用） */
 - (void)disableScrollGesture;
