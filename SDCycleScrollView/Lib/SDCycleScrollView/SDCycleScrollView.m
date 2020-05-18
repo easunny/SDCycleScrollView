@@ -305,15 +305,6 @@ NSString * const ID = @"SDCycleScrollViewCell";
     _imagePathsGroup = imagePathsGroup;
     
     _totalItemsCount = self.infiniteLoop ? self.imagePathsGroup.count * 200 : self.imagePathsGroup.count;
-    if (_totalItemsCount > 0) {
-        int targetIndex = 0;
-        if (self.infiniteLoop) {
-            targetIndex = _totalItemsCount * 0.5;
-        }else{
-            targetIndex = 0;
-        }
-        [_mainView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:targetIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-    }
     
     if (imagePathsGroup.count > 1) { // 由于 !=1 包含count == 0等情况
         self.mainView.scrollEnabled = YES;
@@ -325,6 +316,17 @@ NSString * const ID = @"SDCycleScrollViewCell";
     
     [self setupPageControl];
     [self.mainView reloadData];
+    if (_totalItemsCount > 0) {
+        int targetIndex = 0;
+        if (self.infiniteLoop) {
+            targetIndex = _totalItemsCount * 0.5;
+        }else{
+            targetIndex = 0;
+        }
+        if (targetIndex > 0 && targetIndex < _totalItemsCount) {
+            [_mainView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:targetIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+        }
+    }
 }
 
 - (void)setImageURLStringsGroup:(NSArray *)imageURLStringsGroup
